@@ -1,0 +1,266 @@
+[
+	{
+	  "type": "constructor",
+	  "inputs": [
+		{
+		  "name": "_initialAdmin",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_paymentToken",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_myNFT",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_collectedCardsID",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "EmptyJackpot",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidAddress",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidAmount",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidValue",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "NotCollectedCards",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "OwnableInvalidOwner",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "owner",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ]
+	},
+	{
+	  "name": "OwnableUnauthorizedAccount",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "account",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ]
+	},
+	{
+	  "name": "JackpotClaim",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "user",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "indexed": false,
+		  "internalType": "uint256"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x16f67fd92ffb20fb68612d68e9725fe41944a7be57a193cb98fa735dd6f5d948"
+	},
+	{
+	  "name": "OwnershipTransferred",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "previousOwner",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "newOwner",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+	},
+	{
+	  "name": "claim",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [],
+	  "signature": "0x4e71d92d",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "collectedCardsID",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x1dd5605d",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getCollectedCardsID",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "cardsID",
+		  "type": "uint32[]",
+		  "value": [
+			"1",
+			"2",
+			"3",
+			"4",
+			"5"
+		  ],
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x4cbe5274",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getTotalValue",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "value": "0",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xcaa648b4",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "myNFT",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x49430AB34Dad2622b3327B57e517D22a2488E530",
+		  "internalType": "contract IMyNFT"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x09a31d50",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "owner",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x5Dba29C71575F4b271926c98F5170d86FfEb1bab",
+		  "internalType": "address"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x8da5cb5b",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "paymentToken",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x69fBe552E6361A7620Bb2C106259Be301049E087",
+		  "internalType": "contract ERC20"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x3013ce29",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "renounceOwnership",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [],
+	  "signature": "0x715018a6",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "setCollectedCardsID",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_cardsID",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0xad26432e",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "transferOwnership",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "newOwner",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0xf2fde38b",
+	  "stateMutability": "nonpayable"
+	}
+  ]

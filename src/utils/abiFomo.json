@@ -1,0 +1,512 @@
+[
+	{
+	  "type": "constructor",
+	  "inputs": [
+		{
+		  "name": "_basePaymentToken",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_register",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_price",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "InsufficientAllowance",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InsufficientBalance",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidAddress",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidAmount",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidValue",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "Fomo3dClaim",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "user",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "indexed": false,
+		  "internalType": "uint256"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x3488c34059d2e654b3b166b5ec4ee17bbd37297b906d39c704104a7dc2459b31"
+	},
+	{
+	  "name": "Fomo3dDeposit",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "user",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "indexed": false,
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "amount",
+		  "type": "uint256",
+		  "indexed": false,
+		  "internalType": "uint256"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x0f0d29b5d4cebe99e2c93ffec39876a8b37c77ba767270f4f489daede43aea4e"
+	},
+	{
+	  "name": "amount",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xb9f0bf66",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "claim",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [],
+	  "signature": "0x4e71d92d",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "claimed",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xc884ef83",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "decimal",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "value": "6",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x76809ce3",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "deposit",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "_amount",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x0efe6a8b",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "getClaimed",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xeb46260e",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getCurrentHistoryNonce",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "nonce",
+		  "type": "uint32",
+		  "value": "0",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x6d1c6041",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getHistory",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_nonce",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "tuple",
+		  "components": [
+			{
+			  "name": "user",
+			  "type": "address",
+			  "internalType": "address"
+			},
+			{
+			  "name": "value",
+			  "type": "uint256",
+			  "internalType": "uint256"
+			},
+			{
+			  "name": "amount",
+			  "type": "uint256",
+			  "internalType": "uint256"
+			}
+		  ],
+		  "internalType": "struct IFomo3d.HistoryInfo"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x07040e91",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getPredict",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_amount",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x13da0777",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getTotalProfit",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x8233fbcb",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getUnclaim",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x480a4262",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "historyInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "user",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "amount",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xf54f0a8d",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "historyNonce",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "value": "1",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xcdf033f3",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "mask",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xeeda71d5",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "paymentToken",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x69fBe552E6361A7620Bb2C106259Be301049E087",
+		  "internalType": "contract ERC20"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x3013ce29",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "price",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "value": "10000000",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xa035b1fe",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "register",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x7b0989e541c26e6ed0ec65663789dc6d4AAf91D5",
+		  "internalType": "contract Register"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x1aa3a008",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "totalAmount",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "value": "11",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x1a39d8ef",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "totalValue",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "value": "10000000",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xd4c3eea0",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "unclaim",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x1161e582",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "valuePerAmount",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "value": "909090909090",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x7a19a488",
+	  "stateMutability": "view"
+	}
+  ]

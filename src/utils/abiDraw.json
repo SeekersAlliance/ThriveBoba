@@ -1,0 +1,1276 @@
+[
+	{
+	  "type": "constructor",
+	  "inputs": [
+		{
+		  "name": "_initialAdmin",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_register",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_nftContract",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "AccessControlBadConfirmation",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "AccessControlUnauthorizedAccount",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "account",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "neededRole",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		}
+	  ]
+	},
+	{
+	  "name": "DrawableNotEnough",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ]
+	},
+	{
+	  "name": "DrawingPoolExisted",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ]
+	},
+	{
+	  "name": "DrwaingPoolNotExist",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ]
+	},
+	{
+	  "name": "EmptyIDs",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "HasRoleAlready",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		}
+	  ]
+	},
+	{
+	  "name": "InvalidIndex",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ]
+	},
+	{
+	  "name": "LengthNotMatch",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "NoPendingRequest",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "RequestAlreadyFulfilled",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ]
+	},
+	{
+	  "name": "RequestNotExist",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ]
+	},
+	{
+	  "name": "RequestNotFulfilled",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ]
+	},
+	{
+	  "name": "TokenExisted",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ]
+	},
+	{
+	  "name": "TokenNotExist",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ]
+	},
+	{
+	  "name": "UnitPoolExisted",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ]
+	},
+	{
+	  "name": "UnitPoolNotExist",
+	  "type": "error",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ]
+	},
+	{
+	  "name": "ZeroAmount",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "RequestCompleted",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "requestId",
+		  "type": "uint256",
+		  "indexed": true,
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "requester",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "ids",
+		  "type": "uint256[]",
+		  "indexed": false,
+		  "internalType": "uint256[]"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x2ae888b0dd6538e85f4e2b0881b69ba8e4af2ead705e8b76d6f93b8fe6ac4a6a"
+	},
+	{
+	  "name": "RequestFulfilled",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "requestId",
+		  "type": "uint256",
+		  "indexed": true,
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "randomWords",
+		  "type": "uint256[]",
+		  "indexed": false,
+		  "internalType": "uint256[]"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0xfe2e2d779dba245964d4e3ef9b994be63856fd568bf7d3ca9e224755cb1bd54d"
+	},
+	{
+	  "name": "RequestSent",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "requestId",
+		  "type": "uint256",
+		  "indexed": true,
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "_requester",
+		  "type": "address",
+		  "indexed": false,
+		  "internalType": "address"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x48b98ad7a8a8dbe21cc82bf98710ad4d2cdd949ccac393692e4d9a1722c162c7"
+	},
+	{
+	  "name": "RoleAdminChanged",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "indexed": true,
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "previousAdminRole",
+		  "type": "bytes32",
+		  "indexed": true,
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "newAdminRole",
+		  "type": "bytes32",
+		  "indexed": true,
+		  "internalType": "bytes32"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff"
+	},
+	{
+	  "name": "RoleGranted",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "indexed": true,
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "account",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "sender",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d"
+	},
+	{
+	  "name": "RoleRevoked",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "indexed": true,
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "account",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "sender",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b"
+	},
+	{
+	  "name": "SetDrawingPool",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "drawingPoolID",
+		  "type": "uint32",
+		  "indexed": false,
+		  "internalType": "uint32"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x83b611e3a9f3ebea1fa1254d2c7535bd0733ed9b76a5a2b0da450d5ba399ecbd"
+	},
+	{
+	  "name": "SetTokenMaxAmount",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "maxAmounts",
+		  "type": "uint32[]",
+		  "indexed": false,
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x8baf124fb435347a873afb6512246f2fae8e3fd69d4689513bef69293c84c29b"
+	},
+	{
+	  "name": "SetTokenPool",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "ids",
+		  "type": "uint256[]",
+		  "indexed": false,
+		  "internalType": "uint256[]"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x7deb1779af15e10714f572c4ec4ac6290b5e3132af43085b2d7cb86f75024bbf"
+	},
+	{
+	  "name": "SetUnitPool",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "unitPoolID",
+		  "type": "uint32",
+		  "indexed": false,
+		  "internalType": "uint32"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0xccfa93fc6dee2f7a59e08bd1a7bce043edec08ba7a9daa51aa4be9c95294acd6"
+	},
+	{
+	  "name": "DEFAULT_ADMIN_ROLE",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "bytes32",
+		  "value": "0x0000000000000000000000000000000000000000000000000000000000000000",
+		  "internalType": "bytes32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xa217fddf",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "MANAGER_ROLE",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "bytes32",
+		  "value": "0x241ecf16d79d0f8dbfb92cbc07fe17840425976cf0667f022fe9877caa831b08",
+		  "internalType": "bytes32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xec87621c",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "drawingPoolsInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "enable",
+		  "type": "bool",
+		  "internalType": "bool"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x75a6da9b",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "execRequestBatch",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [],
+	  "signature": "0x8487a06a",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "existedDrawing",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x2e413c37",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "existedUnit",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x8667b8d9",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "fulfillRandomWords",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_requestId",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "_randomWords",
+		  "type": "uint256[]",
+		  "internalType": "uint256[]"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x38ba4614",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "getExistedDrawingPool",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "drawingPools",
+		  "type": "uint32[]",
+		  "value": [
+			"0"
+		  ],
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xb749ea83",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getExistedUnitPool",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "unitPools",
+		  "type": "uint32[]",
+		  "value": [
+			"0",
+			"1",
+			"2"
+		  ],
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x2714795f",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getLastRequestId",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "requestId",
+		  "type": "uint256",
+		  "value": 0,
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x19c2b4c3",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getPoolInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_poolID",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "unitPools",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		},
+		{
+		  "name": "probs",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		},
+		{
+		  "name": "accumulatedProbs",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xb670ed52",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getRequestInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_requestId",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "tuple",
+		  "components": [
+			{
+			  "name": "exists",
+			  "type": "bool",
+			  "internalType": "bool"
+			},
+			{
+			  "name": "fulfilled",
+			  "type": "bool",
+			  "internalType": "bool"
+			},
+			{
+			  "name": "completed",
+			  "type": "bool",
+			  "internalType": "bool"
+			},
+			{
+			  "name": "requestSender",
+			  "type": "address",
+			  "internalType": "address"
+			},
+			{
+			  "name": "poolsID",
+			  "type": "uint32[]",
+			  "internalType": "uint32[]"
+			},
+			{
+			  "name": "amounts",
+			  "type": "uint32[]",
+			  "internalType": "uint32[]"
+			},
+			{
+			  "name": "randomWords",
+			  "type": "uint256[]",
+			  "internalType": "uint256[]"
+			}
+		  ],
+		  "internalType": "struct IHierarchicalDrawing.RequestInfo"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x0b816045",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getReuqestQueue",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "queue",
+		  "type": "uint256[]",
+		  "value": [
+			"81145268656098883476662828448664794062486911242203505560519862078998241392056"
+		  ],
+		  "internalType": "uint256[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x39da9fb8",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getRoleAdmin",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x248a9ca3",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getTokenInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_id",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "existed",
+		  "type": "bool",
+		  "internalType": "bool"
+		},
+		{
+		  "name": "index",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "maxAmount",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		},
+		{
+		  "name": "remaining",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x8c7a63ae",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getTokenMaxAmounts",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32[]",
+		  "value": [
+			"500000",
+			"500000",
+			"500000",
+			"500000",
+			"500000"
+		  ],
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x3c15ecf4",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getTokenPoolInfo",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256[]",
+		  "value": [
+			"1",
+			"2",
+			"3",
+			"4",
+			"5"
+		  ],
+		  "internalType": "uint256[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xd7b6453f",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getTokenRemainings",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32[]",
+		  "value": [
+			"499997",
+			"500000",
+			"500000",
+			"499999",
+			"499993"
+		  ],
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xf36b4b58",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getUnitPoolInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_unitID",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "probs",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		},
+		{
+		  "name": "tree",
+		  "type": "tuple",
+		  "components": [
+			{
+			  "name": "nums",
+			  "type": "uint256",
+			  "internalType": "uint256"
+			},
+			{
+			  "name": "result",
+			  "type": "uint256[]",
+			  "internalType": "uint256[]"
+			}
+		  ],
+		  "internalType": "struct PackedArray.PackedArray32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xf3ebc985",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "grantRole",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "account",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x2f2ff15d",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "hasRole",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "account",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "bool",
+		  "internalType": "bool"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x91d14854",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "ids",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xfac333ac",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "maxAmounts",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x02f43023",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "nftContract",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x49430AB34Dad2622b3327B57e517D22a2488E530",
+		  "internalType": "contract IMyNFT"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xd56d229d",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "pendingRequestNum",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "pending",
+		  "type": "uint256",
+		  "value": "0",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xd2b0022f",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "register",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x7b0989e541c26e6ed0ec65663789dc6d4AAf91D5",
+		  "internalType": "contract Register"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x1aa3a008",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "remainings",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x3c36eaec",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "renounceRole",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "callerConfirmation",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x36568abe",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "requestNonce",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "value": "1",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x7c1a0302",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "requestsInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "exists",
+		  "type": "bool",
+		  "internalType": "bool"
+		},
+		{
+		  "name": "fulfilled",
+		  "type": "bool",
+		  "internalType": "bool"
+		},
+		{
+		  "name": "completed",
+		  "type": "bool",
+		  "internalType": "bool"
+		},
+		{
+		  "name": "requestSender",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x61d34d42",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "requestsQueue",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x4749c25c",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "revokeRole",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "role",
+		  "type": "bytes32",
+		  "internalType": "bytes32"
+		},
+		{
+		  "name": "account",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0xd547741f",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "sendRequest",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_poolsID",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		},
+		{
+		  "name": "_drawAmounts",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x7c6ff2da",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "setDrawingPool",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_poolID",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		},
+		{
+		  "name": "_unitIDs",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		},
+		{
+		  "name": "_probs",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x793822f8",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "setTokenMaxAmount",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_maxAmounts",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x1a75b3ed",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "setTokenPool",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_ids",
+		  "type": "uint256[]",
+		  "internalType": "uint256[]"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x5a1c7c50",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "setUnitPool",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_unitID",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		},
+		{
+		  "name": "_probs",
+		  "type": "uint32[]",
+		  "internalType": "uint32[]"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x5b94a71b",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "supportsInterface",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "interfaceId",
+		  "type": "bytes4",
+		  "internalType": "bytes4"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "bool",
+		  "internalType": "bool"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x01ffc9a7",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "unitPoolsInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "enable",
+		  "type": "bool",
+		  "internalType": "bool"
+		},
+		{
+		  "name": "treeHeight",
+		  "type": "uint8",
+		  "internalType": "uint8"
+		},
+		{
+		  "name": "tree",
+		  "type": "tuple",
+		  "components": [
+			{
+			  "name": "nums",
+			  "type": "uint256",
+			  "internalType": "uint256"
+			},
+			{
+			  "name": "result",
+			  "type": "uint256[]",
+			  "internalType": "uint256[]"
+			}
+		  ],
+		  "internalType": "struct PackedArray.PackedArray32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xd8683b2e",
+	  "stateMutability": "view"
+	}
+  ]

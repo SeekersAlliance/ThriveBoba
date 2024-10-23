@@ -1,0 +1,299 @@
+[
+	{
+	  "type": "constructor",
+	  "inputs": [
+		{
+		  "name": "_register",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "InvalidAddress",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidAmount",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "InvalidValue",
+	  "type": "error",
+	  "inputs": []
+	},
+	{
+	  "name": "ReferralDeposit",
+	  "type": "event",
+	  "inputs": [
+		{
+		  "name": "sender",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "referral",
+		  "type": "address",
+		  "indexed": true,
+		  "internalType": "address"
+		},
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "indexed": false,
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "amount",
+		  "type": "uint32",
+		  "indexed": false,
+		  "internalType": "uint32"
+		}
+	  ],
+	  "anonymous": false,
+	  "signature": "0x882e7e61d455b8a0e433994e2bc25d32b94ae9d9fc8bd3ec7d02f739f7b4832f"
+	},
+	{
+	  "name": "deposit",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_sender",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_referral",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "_amount",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x7ef58e91",
+	  "stateMutability": "nonpayable"
+	},
+	{
+	  "name": "getHistoryReferralInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "tuple[]",
+		  "components": [
+			{
+			  "name": "value",
+			  "type": "uint256",
+			  "internalType": "uint256"
+			},
+			{
+			  "name": "amount",
+			  "type": "uint32",
+			  "internalType": "uint32"
+			},
+			{
+			  "name": "from",
+			  "type": "address",
+			  "internalType": "address"
+			}
+		  ],
+		  "internalType": "struct IReferral.ReferralInfo[]"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xe79bde18",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getReferralAddress",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x4954cbb9",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "getTotalReferralInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "tuple",
+		  "components": [
+			{
+			  "name": "value",
+			  "type": "uint256",
+			  "internalType": "uint256"
+			},
+			{
+			  "name": "amount",
+			  "type": "uint32",
+			  "internalType": "uint32"
+			},
+			{
+			  "name": "count",
+			  "type": "uint32",
+			  "internalType": "uint32"
+			}
+		  ],
+		  "internalType": "struct IReferral.TotalReferralInfo"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xffd33b78",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "historyReferralInfo",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "value",
+		  "type": "uint256",
+		  "internalType": "uint256"
+		},
+		{
+		  "name": "amount",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		},
+		{
+		  "name": "from",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x6424a0a6",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "referralCount",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "uint32",
+		  "internalType": "uint32"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0xdb74559b",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "referralMap",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x9ca17601",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "register",
+	  "type": "function",
+	  "inputs": [],
+	  "outputs": [
+		{
+		  "name": "",
+		  "type": "address",
+		  "value": "0x7b0989e541c26e6ed0ec65663789dc6d4AAf91D5",
+		  "internalType": "contract Register"
+		}
+	  ],
+	  "constant": true,
+	  "signature": "0x1aa3a008",
+	  "stateMutability": "view"
+	},
+	{
+	  "name": "setReferralAddress",
+	  "type": "function",
+	  "inputs": [
+		{
+		  "name": "_user",
+		  "type": "address",
+		  "internalType": "address"
+		},
+		{
+		  "name": "_referral",
+		  "type": "address",
+		  "internalType": "address"
+		}
+	  ],
+	  "outputs": [],
+	  "signature": "0x2af004e7",
+	  "stateMutability": "nonpayable"
+	}
+  ]
