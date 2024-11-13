@@ -53,6 +53,7 @@ contract VRFv2SubscriptionManager is VRFConsumerBase, AccessControl {
         //Create a new subscription when you deploy the contract.
         createNewSubscription();
     }
+    
 
 
     // Takes request sender as the parameter and submits the request to the VRF coordinator contract.
