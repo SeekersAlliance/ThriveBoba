@@ -24,31 +24,31 @@ export const opBNBChainTarget = {
 };
 
 export const getAccount = async () => {
-	// if (window.ethereum) {
-	// 	const accounts = await window.ethereum.request({
-	// 		method: 'eth_accounts',
-	// 	});
+	if (window.ethereum) {
+		const accounts = await window.ethereum.request({
+			method: 'eth_accounts',
+		});
 
-	// 	if (accounts.length > 0) {
-	// 		appState.address = accounts[0];
-	// 	}
+		if (accounts.length > 0) {
+			appState.address = accounts[0];
+		}
 
-	// 	await ensureNetworkTarget();
-	// }
+		await ensureNetworkTarget();
+	}
 };
 
 export const connectWallet = async () => {
-	// if (window?.ethereum) {
-	// 	const accounts = await window.ethereum.request({
-	// 		method: 'eth_requestAccounts',
-	// 	});
+	if (window?.ethereum) {
+		const accounts = await window.ethereum.request({
+			method: 'eth_requestAccounts',
+		});
 
-	// 	if (accounts.length > 0) {
-	// 		appState.address = accounts[0];
-	// 	}
+		if (accounts.length > 0) {
+			appState.address = accounts[0];
+		}
 
-	// 	await ensureNetworkTarget();
-	// }
+		await ensureNetworkTarget();
+	}
 };
 
 export const ensureNetworkTarget = async () => {
@@ -82,7 +82,7 @@ export enum SmartContract {
 }
 
 export const web3 = new Web3(window.ethereum);
-web3.eth.setProvider(opBNBChainTarget.rpcUrls[0]);
+// web3.eth.setProvider(opBNBChainTarget.rpcUrls[0]);
 const web3Socket = new Web3(
 	new Web3.providers.WebsocketProvider('wss://opbnb-testnet.publicnode.com'),
 );
@@ -127,7 +127,7 @@ export const purchasePack = async (pack: number, card: number) => {
 				.approve(SmartContract.Marketplace, allowanceRequire)
 				.send({ from: address });
 		}
-
+		console.log('account', address, pack, card, referredAddress || '0x0000000000000000000000000000000000000000');	
 		const result = await marketplaceContract.methods
 			.purchasePack(
 				pack,
@@ -137,6 +137,7 @@ export const purchasePack = async (pack: number, card: number) => {
 			.send({
 				from: address,
 			});
+		console.log('transaction', result);
 		appState.transactionId = result.transactionHash;
 
 		const requestIdHash = result.logs.find(
@@ -347,6 +348,8 @@ export const getPredict = async (address: string, numberOfCards: number) => {
 
 export const claimProfit = async () => {
 	const { address } = snapshot(appState);
+	console.log('get claimed', fomoContract);
+
 	const result = await fomoContract.methods.claim().send({
 		from: address,
 	});
@@ -380,8 +383,8 @@ export const fetchPastEvents = async () => {
 				Number(latter.blockNumber) - Number(former.blockNumber),
 		);
 
-	console.log(jackpotEvents);
-	console.log(filteredDrawEvent);
+	// console.log(jackpotEvents);
+	// console.log(filteredDrawEvent);
 	appState.latestEvents[0] = filteredJackpotEvents[0];
 	appState.latestEvents[1] = filteredDrawEvent[0];
 	appState.latestEvents[2] = filteredJackpotEvents[0];
