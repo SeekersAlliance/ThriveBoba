@@ -19,7 +19,10 @@ export const HomeScreen: FC = () => {
 	}, [referredAddress]);
 
 	useEffect(() => {
-		window.ethereum && fetchPastEvents();
+		if (window.ethereum) {
+			console.log('ethereum is available');
+			fetchPastEvents();
+		}
 	}, []);
 
 	return (

@@ -82,6 +82,7 @@ export enum SmartContract {
 }
 
 export const web3 = new Web3(window.ethereum);
+web3.eth.setProvider(opBNBChainTarget.rpcUrls[0]);
 const web3Socket = new Web3(
 	new Web3.providers.WebsocketProvider('wss://opbnb-testnet.publicnode.com'),
 );
