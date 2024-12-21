@@ -51,8 +51,16 @@ export const Header: FC = () => {
 	const [connected, setConnected] = useState(!!address);
 
 	useEffect(() => {
-		getAccount();
-		getJackpotTotalValue();
+		const getInitialData = async () => {
+			try {
+				await getAccount();
+				await getJackpotTotalValue();
+			}
+			catch (err) {
+				console.error(err);
+			}
+		}
+		getInitialData();
 		window.ethereum?.on('accountsChanged', (accounts: string[]) => {
 			handleAccountChanged(accounts);
 			navigate('/');
@@ -103,9 +111,9 @@ export const Header: FC = () => {
 				) : (
 					<div>
 						<WalletGroup>
-							<div>
+							{/* <div>
 								<div />
-							</div>
+							</div> */}
 							<div>{formatAddress(address)}</div>
 						</WalletGroup>
 					</div>
@@ -202,15 +210,6 @@ const WalletGroup = styled.div`
 		font-size: 20px;
 		padding: 3px 15px;
 
-		&:nth-child(1) {
-			div {
-				padding: 0;
-				background-image: url('${getBaseUrl()}/img/pg1-2/opbnb_logo.png');
-				background-size: contain;
-				background-repeat: no-repeat;
-				width: 130px;
-				aspect-ratio: 192 / 37;
-			}
-		}
+		
 	}
 `;

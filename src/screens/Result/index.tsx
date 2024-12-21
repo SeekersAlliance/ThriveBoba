@@ -45,9 +45,9 @@ export const ResultScreen: FC = () => {
 				<Fragment>
 					<Header>
 						<WalletGroup>
-							<div>
+							{/* <div>
 								<div />
-							</div>
+							</div> */}
 							<div>{formatAddress(address)}</div>
 						</WalletGroup>
 					</Header>
@@ -55,7 +55,7 @@ export const ResultScreen: FC = () => {
 						<TransactionBtn
 							onClick={() =>
 								window.open(
-									`https://testnet.opbnbscan.com/tx/${transactionId}`,
+									`https://testnet.bobascan.com/tx/${transactionId}`,
 									'_blank',
 								)
 							}
@@ -139,16 +139,7 @@ const WalletGroup = styled.div`
 		font-size: 20px;
 		padding: 3px 15px;
 
-		&:nth-child(1) {
-			div {
-				padding: 0;
-				background-image: url('${getBaseUrl()}/img/pg1-2/opbnb_logo.png');
-				background-size: contain;
-				background-repeat: no-repeat;
-				width: 130px;
-				aspect-ratio: 192 / 37;
-			}
-		}
+		
 	}
 `;
 

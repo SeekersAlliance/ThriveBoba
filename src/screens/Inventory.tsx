@@ -82,7 +82,7 @@ export const InventoryScreen: FC = () => {
 							isLong
 							onClick={() =>
 								window.open(
-									`https://testnet.opbnbscan.com/tx/${jackpotTxId}`,
+									`https://testnet.bobascan.com//tx/${jackpotTxId}`,
 									'_blank',
 								)
 							}

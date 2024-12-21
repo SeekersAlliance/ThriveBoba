@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { CardType, getCardImage } from '../../utils/cards.ts';
 import { appState } from '../../utils/state/index.ts';
 import { proxy } from 'valtio';
+import { getDrawEvent } from '../../utils/chain.ts';
 
 interface Props {
 	cardIds: readonly number[];
@@ -20,6 +21,10 @@ export const CardGroup: FC<Props> = ({ cardIds }) => {
 	}, [cardIds]);
 
 	useEffect(() => {
+		const getResults = async () => {
+			await getDrawEvent();
+		}
+		// getResults();
 		return () => {
 			appState.cardResult = proxy([]);
 		};

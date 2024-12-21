@@ -32,6 +32,7 @@ export const HomeScreen: FC = () => {
 				<MarqueeContainer>
 					<MarqueeInnerContainer>
 						{latestEvents.map((event, idx) => {
+							if (!event) return null;
 							const isJackpot = event.event.includes('Jackpot');
 							const user = (
 								isJackpot
@@ -55,12 +56,12 @@ export const HomeScreen: FC = () => {
 						<FaucetBtn
 							onClick={() =>
 								window.open(
-									'https://opbnb-testnet-bridge.bnbchain.org/deposit',
+									'https://gateway.boba.network/',
 									'_blank',
 								)
 							}
 						>
-							TBNB Faucet
+							Boba Network Bridge
 						</FaucetBtn>
 						<FaucetBtn onClick={() => faucetToken(address, 1000)}>
 							Get 1000 TestUSD

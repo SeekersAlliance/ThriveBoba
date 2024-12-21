@@ -12,7 +12,6 @@ import HomeScreen from './screens/Home.tsx';
 import InventoryScreen from './screens/Inventory.tsx';
 import ResultScreen from './screens/Result/index.tsx';
 import {
-	subscribeDrawEvent,
 	subscribeNftContractEvent,
 	web3,
 } from './utils/chain.ts';
@@ -53,36 +52,14 @@ export const router = createBrowserRouter(
 
 export const App: FC = () => {
 	useEffect(() => {
-		let ws: WebSocket;
-		const connect = () => {
-			ws = new WebSocket('wss://opbnb-testnet.publicnode.com');
-			console.log('start websocket', ws);
+		
+		const nftEvents = subscribeNftContractEvent();
 
-			ws.onopen = (event) => {
-				console.log('websocket opened', event);
-				subscribeDrawEvent();
-				subscribeNftContractEvent();
-			};
-
-			ws.onmessage = (event) => {
-				console.log(event);
-			};
-
-			ws.onerror = (event) => {
-				console.log('websocket error', event);
-				setTimeout(connect, 5000);
-			};
-
-			ws.onclose = () => {
-				setTimeout(connect, 5000);
-			};
-		};
-
-		connect();
 
 		return () => {
-			web3.eth.clearSubscriptions();
-			ws.close();
+			console.log('unsubscribing');
+			nftEvents?.forEach((event:any) => event.unsubscribe());
+
 		};
 	}, []);
 	return <RouterProvider router={router} />;

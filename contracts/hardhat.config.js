@@ -2,6 +2,7 @@ require("@nomicfoundation/hardhat-toolbox");
 const { vars } = require("hardhat/config");
 const PRIVATE_KEY = vars.get("PRIVATE");
 /** @type import('hardhat/config').HardhatUserConfig */
+
 module.exports = {
   solidity: {
     compilers: [
@@ -27,6 +28,12 @@ module.exports = {
       gas: "auto", 
       gasPrice: "auto", 
     },
+    boba_test: {
+      url: `https://sepolia.boba.network`,
+      accounts: [PRIVATE_KEY],
+      gas: "auto", 
+      gasPrice: "auto", 
+    },  
 
   }
 };

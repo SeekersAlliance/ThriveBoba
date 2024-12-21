@@ -12,15 +12,15 @@ import abiReferral from './abiReferral.json';
 import abiToken from './abiToken.json';
 import { appState } from './state/index.ts';
 
-export const opBNBChainTarget = {
-	chainId: '0x15EB',
-	chainName: 'opBNB Testnet',
+export const BobaSepoliaChainTarge = {
+	chainId: '0x70d2',
+	chainName: 'Boba Sepolia',
 	nativeCurrency: {
-		symbol: 'tBNB',
+		symbol: 'ETH',
 		decimals: 18,
 	},
-	rpcUrls: ['https://opbnb-testnet-rpc.bnbchain.org'],
-	blockExplorerUrls: ['https://opbnb-testnet.bscscan.com'],
+	rpcUrls: ['https://sepolia.boba.network'],
+	blockExplorerUrls: ['https://testnet.bobascan.com'],
 };
 
 export const getAccount = async () => {
@@ -54,13 +54,13 @@ export const connectWallet = async () => {
 export const ensureNetworkTarget = async () => {
 	await window.ethereum?.request({
 		method: 'wallet_addEthereumChain',
-		params: [opBNBChainTarget],
+		params: [BobaSepoliaChainTarge],
 	});
 	await window.ethereum?.request({
 		method: 'wallet_switchEthereumChain',
 		params: [
 			{
-				chainId: opBNBChainTarget.chainId,
+				chainId: BobaSepoliaChainTarge.chainId,
 			},
 		],
 	});
@@ -72,20 +72,18 @@ export const handleAccountChanged = (accounts: string[]) => {
 };
 
 export enum SmartContract {
-	Token = '0x69fBe552E6361A7620Bb2C106259Be301049E087',
-	Marketplace = '0xe43BeE387e5d89c299730f7B7b581D35af753494',
-	Draw = '0xe0320089466D923f3401F3b50CBEBE51Fba5C868',
-	NFT = '0x49430AB34Dad2622b3327B57e517D22a2488E530',
-	Jackpot = '0xBBda289cEe994B0927e45F9682faCAa1e1658916',
-	Referral = '0xC8155eDB016b8Dd8863c77D4EE6015326F5b8a9d',
-	Fomo = '0x227eebC2f5BBb3d636d3F7027690a01A3fbA38DD',
+	Token = '0xC4734D1D2c7CD7F8241A1a83816E27e2Dc6Fd1af',
+	Marketplace = '0xCa24de3a05FDDBCA9F39dd02937cA86cD815A1f6',
+	Draw = '0x354256aF8b725662E4411EBE178c47d1f97a509B',
+	NFT = '0x46d657Ba75C5A1fd60b9E4dee64318Ff69e670fe',
+	Jackpot = '0x22b605fC43AC6cAf517D02fA06AcF1a49ba860Ed',
+	Referral = '0xDd866d81B0E56DBa8a5eAdC9A3787f411F3e3E3C',
+	Fomo = '0xf0C8283157f9C6C59D34083D52955783a3F0414A',
 }
 
 export const web3 = new Web3(window.ethereum);
-// web3.eth.setProvider(opBNBChainTarget.rpcUrls[0]);
-const web3Socket = new Web3(
-	new Web3.providers.WebsocketProvider('wss://opbnb-testnet.publicnode.com'),
-);
+// web3.eth.setProvider(BobaSepoliaChainTarge.rpcUrls[0]);
+
 
 const loadContract = (abi: any, contract: SmartContract) => {
 	return new web3.eth.Contract(abi, contract);
@@ -133,20 +131,31 @@ export const purchasePack = async (pack: number, card: number) => {
 				pack,
 				card,
 				referredAddress || '0x0000000000000000000000000000000000000000',
+				[Math.floor(Math.random() * 1000000)]
 			)
 			.send({
 				from: address,
 			});
 		console.log('transaction', result);
 		appState.transactionId = result.transactionHash;
+		
+
 
 		const requestIdHash = result.logs.find(
 			(log) => log.address === SmartContract.Draw.toLowerCase(),
 		)?.topics?.[1];
+		const logData = result.logs.filter(
+			(log) => log.address === SmartContract.Draw.toLowerCase(),
+		)[1].data;
+		if (requestIdHash && logData) {
+			console.log('logData', logData);
+			const decoded = web3.eth.abi.decodeParameters(['uint256[]'], logData);
 
-		if (requestIdHash) {
+			console.log("Decoded Log:", decoded);
 			const decString = web3.utils.hexToNumberString(requestIdHash);
+			console.log('request id', decString);
 			appState.requestId = decString;
+			appState.cardResult = decoded[0].map((value) => Number(value));
 		}
 
 		return result;
@@ -155,50 +164,63 @@ export const purchasePack = async (pack: number, card: number) => {
 	}
 };
 
-export const subscribeDrawEvent = async () => {
-	try {
-		const drawContractWebsocket = new web3Socket.eth.Contract(
-			abiDraw,
-			SmartContract.Draw,
-		);
-		const subscription = drawContractWebsocket.events.RequestCompleted();
-		subscription.on('data', async (event) => {
-			console.log('draw event', event);
-			const { requestId } = snapshot(appState);
-			const compareRequestId =
-				event.returnValues[0]?.toString() === requestId;
+export const getDrawEvent = async () => {
+	const { requestId } = snapshot(appState);
+	const maxRetries = 10;
+	const interval = 1000;
+	let attempts = 0;
 
-			if (compareRequestId) {
-				const cardResult = (event.returnValues['ids'] as number[]).map(
-					(value) => Number(value),
-				);
-				appState.cardResult = proxy(cardResult);
-			}
-			const tx = await web3.eth.getTransaction(
-				event.transactionHash as string,
-			);
-			console.log('transaction', tx);
-			getJackpotTotalValue();
-		});
-	} catch (error) {
-		console.log(error);
-	}
+	while (attempts < maxRetries) {
+        try {
+            console.log(`Attempt ${attempts + 1}/${maxRetries} to fetch events...`);
+
+            const drawEvents = (await drawContract.getPastEvents('RequestCompleted', {
+                fromBlock: 0,
+                toBlock: 'latest',
+            })) as EventLog[];
+
+            const filteredDrawEvents = drawEvents.toSorted(
+                (formerEvent, latterEvent) =>
+                    Number(latterEvent.blockNumber) - Number(formerEvent.blockNumber),
+            );
+
+            console.log('Fetched draw events:', filteredDrawEvents);
+
+            for (const event of filteredDrawEvents) {
+                const compareRequestId = event.returnValues[0]?.toString() === requestId;
+                if (compareRequestId) {
+                    const cardResult = (event.returnValues['ids'] as number[]).map(
+                        (value) => Number(value),
+                    );
+                    appState.cardResult = proxy(cardResult);
+                    console.log('Found matching event, card result:', appState.cardResult);
+					console.log('cardResult', cardResult);
+                    return appState.cardResult;
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, interval));
+        attempts++;
+    }
+
+    console.warn('Max retries reached, no matching event found.');
+    return null; // 沒有找到事件時返回 null
 };
 
 const nftIds = [4, 2, 3, 1, 5];
 
 export const subscribeNftContractEvent = () => {
-	const nftContractWebsocket = new web3Socket.eth.Contract(
-		abiNFT,
-		SmartContract.NFT,
-	);
-	nftContractWebsocket.events
-		.TransferSingle({
+	console.log('subscribe nft contract event');
+	try{
+		const nftEvent = nftContract.events.TransferSingle({
 			filter: {
 				to: appState.address,
 			},
 		})
-		.on('data', async (event) => {
+		nftEvent.on('data', async (event) => {
 			console.log('transfer single >>>', event);
 			const receipt = await web3.eth.getTransaction(
 				event.transactionHash as string,
@@ -206,13 +228,12 @@ export const subscribeNftContractEvent = () => {
 			console.log('transaction', receipt);
 			await fetchNftIdList();
 		});
-	nftContractWebsocket.events
-		.TransferBatch({
+		const nftEvent2 = nftContract.events.TransferBatch({
 			filter: {
 				to: appState.address,
 			},
 		})
-		.on('data', async (event) => {
+		nftEvent2.on('data', async (event) => {
 			console.log('transfer batch >>>', event);
 			const receipt = await web3.eth.getTransaction(
 				event.transactionHash as string,
@@ -220,13 +241,12 @@ export const subscribeNftContractEvent = () => {
 			console.log('transaction', receipt);
 			await fetchNftIdList();
 		});
-	nftContractWebsocket.events
-		.TransferBatch({
+		const nftEvent3 = nftContract.events.TransferBatch({
 			filter: {
 				from: appState.address,
 			},
 		})
-		.on('data', async (event) => {
+		nftEvent3.on('data', async (event) => {
 			console.log('burn cards >>>', event);
 			const receipt = await web3.eth.getTransaction(
 				event.transactionHash as string,
@@ -234,6 +254,56 @@ export const subscribeNftContractEvent = () => {
 			console.log('transaction', receipt);
 			await fetchNftIdList();
 		});
+		return [nftEvent, nftEvent2, nftEvent3];
+	}catch(error){
+		console.log(error);
+	}
+	// const nftContractWebsocket = new web3Socket.eth.Contract(
+	// 	abiNFT,
+	// 	SmartContract.NFT,
+	// );
+	// nftContractWebsocket.events
+	// 	.TransferSingle({
+	// 		filter: {
+	// 			to: appState.address,
+	// 		},
+	// 	})
+	// 	.on('data', async (event) => {
+	// 		console.log('transfer single >>>', event);
+	// 		const receipt = await web3.eth.getTransaction(
+	// 			event.transactionHash as string,
+	// 		);
+	// 		console.log('transaction', receipt);
+	// 		await fetchNftIdList();
+	// 	});
+	// nftContractWebsocket.events
+	// 	.TransferBatch({
+	// 		filter: {
+	// 			to: appState.address,
+	// 		},
+	// 	})
+	// 	.on('data', async (event) => {
+	// 		console.log('transfer batch >>>', event);
+	// 		const receipt = await web3.eth.getTransaction(
+	// 			event.transactionHash as string,
+	// 		);
+	// 		console.log('transaction', receipt);
+	// 		await fetchNftIdList();
+	// 	});
+	// nftContractWebsocket.events
+	// 	.TransferBatch({
+	// 		filter: {
+	// 			from: appState.address,
+	// 		},
+	// 	})
+	// 	.on('data', async (event) => {
+	// 		console.log('burn cards >>>', event);
+	// 		const receipt = await web3.eth.getTransaction(
+	// 			event.transactionHash as string,
+	// 		);
+	// 		console.log('transaction', receipt);
+	// 		await fetchNftIdList();
+	// 	});
 };
 
 export const fetchNftIdList = async () => {
@@ -383,8 +453,8 @@ export const fetchPastEvents = async () => {
 				Number(latter.blockNumber) - Number(former.blockNumber),
 		);
 
-	// console.log(jackpotEvents);
-	// console.log(filteredDrawEvent);
+	console.log(filteredJackpotEvents);
+	console.log(filteredDrawEvent);
 	appState.latestEvents[0] = filteredJackpotEvents[0];
 	appState.latestEvents[1] = filteredDrawEvent[0];
 	appState.latestEvents[2] = filteredJackpotEvents[0];
