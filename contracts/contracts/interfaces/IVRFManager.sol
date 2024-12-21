@@ -8,5 +8,7 @@ interface IVRFManager {
     event RequestFulfilled(uint256 requestId, uint256[] randomWords);
 
     function getRequestStatus(uint256 _requestId) external view returns (bool fulfilled, uint256[] memory randomWords);
-    function requestRandomWords(address requester) external returns (uint256 requestId);    
+    function getLastRequestId() external view returns(uint256);
+    function requestRandomWords(address requester) external returns (uint256 requestId);
+    function fulfillRandomWords(uint256 _requestId, uint256[] memory _randomWords) external;  
 }

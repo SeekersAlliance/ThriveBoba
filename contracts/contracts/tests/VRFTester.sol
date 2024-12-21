@@ -77,4 +77,8 @@ contract VRFManager is IVRFManager, AccessControl {
         RequestStatus memory request = s_requests[_requestId];
         return (request.fulfilled, request.randomWords);
     }
+
+    function getLastRequestId() external view returns(uint256){
+        return lastRequestId;
+    }
 }

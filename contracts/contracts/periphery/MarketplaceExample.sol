@@ -37,7 +37,57 @@ contract MarketplaceReceiver is Ownable, IMarketplace {
     }
 
     // @inheritdoc IMarketplaceReceiver
-    function purchasePack(uint32 _packID, uint32 _packAmounts, address _referral) external override {
+    // function purchasePack(uint32 _packID, uint32 _packAmounts, address _referral) external override {
+    //     uint256 basePrice = packsInfo[_packID].basePrice;
+    //     uint256 totalPayment;
+    //     address purchaser = msg.sender;
+        
+    //     if(_packAmounts == 0) revert InvalidAmount();
+
+    //     totalPayment = _packAmounts*basePrice;
+        
+    //     /// @notice Check if the purchaser has enough allowance and balance
+    //     if(paymentToken.allowance(purchaser, address(this)) < totalPayment) revert InsufficientAllowance();
+    //     if(paymentToken.balanceOf(purchaser) < totalPayment) revert InsufficientBalance();
+
+        
+        
+    //     uint32[] memory _amounts = packsInfo[_packID].amounts;
+    //     uint32[] memory totalAmounts = new uint32[](_amounts.length);
+    //     uint32 total = 0;
+
+    //     for(uint256 i; i<_amounts.length; i++) {
+    //         totalAmounts[i] = _amounts[i]*_packAmounts;
+    //         total += totalAmounts[i];
+    //     }
+
+    //     // If the referral address is not set, set it to the owner of this contract
+    //     if(IReferral(register.getContract(register.REFERRAL())).getReferralAddress(purchaser) == address(0)){
+    //         if(_referral == address(0)){
+    //             _referral = owner();
+    //         }else{
+    //             IReferral(register.getContract(register.REFERRAL())).setReferralAddress(purchaser, _referral);
+    //         }
+    //     }else{
+    //         _referral = IReferral(register.getContract(register.REFERRAL())).getReferralAddress(purchaser);
+    //     }
+
+    //     // Transfer tokens from buyer to fomo3d, jackpot and referral contracts respectively, 10% to fomo3d, 80% to jackpot and 10% to referral
+
+    //     paymentToken.transferFrom(purchaser, register.getContract(register.FOMO3D()), totalPayment/10);
+    //     IFomo3d(register.getContract(register.FOMO3D())).deposit(purchaser, totalPayment/10, total);
+       
+    //     paymentToken.transferFrom(purchaser, register.getContract(register.JACKPOT()), totalPayment*8/10);
+
+    //     paymentToken.transferFrom(purchaser, _referral, totalPayment/10);
+    //     IReferral(register.getContract(register.REFERRAL())).deposit(purchaser, _referral, totalPayment/10, total);
+
+
+    //     // Call the sendRequest function from the draw contract
+    //     IHierarchicalDrawing(register.getContract(register.DRAW())).sendRequest(purchaser, packsInfo[_packID].poolsID, totalAmounts); 
+    //     emit PackPurchased(purchaser, _packAmounts);
+    // }
+    function purchasePack(uint32 _packID, uint32 _packAmounts, address _referral, uint256[] memory _randomWords) external override {
         uint256 basePrice = packsInfo[_packID].basePrice;
         uint256 totalPayment;
         address purchaser = msg.sender;
@@ -86,6 +136,12 @@ contract MarketplaceReceiver is Ownable, IMarketplace {
         // Call the sendRequest function from the draw contract
         IHierarchicalDrawing(register.getContract(register.DRAW())).sendRequest(purchaser, packsInfo[_packID].poolsID, totalAmounts); 
         emit PackPurchased(purchaser, _packAmounts);
+
+        // fulfill the request
+        IVRFManager vrfGenerator = IVRFManager(register.getContract(register.VRF()));
+        uint256 requestId = vrfGenerator.getLastRequestId();
+        vrfGenerator.fulfillRandomWords(requestId, _randomWords);
+        
     }
     
     // Function for the owner to withdraw funds from the contract

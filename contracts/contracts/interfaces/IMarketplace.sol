@@ -27,7 +27,7 @@ interface IMarketplace{
      * @param _packAmounts The amount of the pack
      * @param _referral The referral address
     */
-    function purchasePack(uint32 _packID, uint32 _packAmounts, address _referral) external;
+    function purchasePack(uint32 _packID, uint32 _packAmounts, address _referral, uint256[] memory _randomWords) external;
 
    
 }

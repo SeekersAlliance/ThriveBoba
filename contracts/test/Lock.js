@@ -151,8 +151,8 @@ describe("jackpot", function () {
     const jackpot = await Jackpot.deploy(owner.address, token.target, prizeItems.target, [1,2,3,4,5]);
     const Referral = await ethers.getContractFactory("Referral");
     const referral = await Referral.deploy(register.target);
-    const VRFv2SubscriptionManagerTEST = await ethers.getContractFactory("VRFv2SubscriptionManagerTEST");
-    const vrf = await VRFv2SubscriptionManagerTEST.deploy(owner.address, owner.address, register.target);
+    const VRFv2SubscriptionManagerTEST = await ethers.getContractFactory("VRFManager");
+    const vrf = await VRFv2SubscriptionManagerTEST.deploy(marketplace.target, register.target);
     const HierarchicalDrawing = await ethers.getContractFactory("HierarchicalDrawing");
     const hierarchicalDrawing = await HierarchicalDrawing.deploy(owner.address, register.target, prizeItems.target)
     // register.
@@ -184,13 +184,15 @@ describe("jackpot", function () {
   describe("Market", function () {
     it("Should set the right owner", async function () {
       const { jackpot, owner } = await loadFixture(SettingContracts);
+      // console.log('jackpot', await jackpot.owner());
+      // console.log('owner', owner.address);
       expect(await jackpot.owner()).to.equal(owner.address);
     });
     it("Buy in market", async function () {
       const { jackpot, owner, prizeItems, marketplace, vrf } = await loadFixture(SettingContracts);
-      await marketplace.purchasePack(1, 1, ZeroAddress);
+      await marketplace.purchasePack(1, 1, ZeroAddress, [Math.floor(Math.random() * 1000000)]);
       // generate rand num by js
-      await vrf.fulfillRandomWordsTest(await vrf.getCurRequestId(), [Math.floor(Math.random() * 1000000)]);
+      // await vrf.fulfillRandomWordsTest(await vrf.getCurRequestId(), [Math.floor(Math.random() * 1000000)]);
       nfts = await prizeItems.balanceOfBatch([owner.address, owner.address, owner.address, owner.address, owner.address], [1,2,3,4,5]);
       totalNums = nfts.map(a => Number(a)).reduce((a, b) => a + b, 0);
       // console.log('nft', nfts);
@@ -203,9 +205,9 @@ describe("jackpot", function () {
         token.mint(owner.address, 1000000000);
         token.approve(marketplace.target, 1000000000);
         // console.log('token left', await token.balanceOf(owner.address));
-        await marketplace.purchasePack(1, 1, ZeroAddress);
+        await marketplace.purchasePack(1, 1, ZeroAddress, [Math.floor(Math.random() * 1000000)]);
         // generate rand num by js
-        await vrf.fulfillRandomWordsTest(await vrf.getCurRequestId(), [Math.floor(Math.random() * 1000000)]);
+        // await vrf.fulfillRandomWordsTest(await vrf.getCurRequestId(), [Math.floor(Math.random() * 1000000)]);
       }
       nfts = (await prizeItems.balanceOfBatch([owner.address, owner.address, owner.address, owner.address, owner.address], [1,2,3,4,5])).map(a => Number(a));
       // console.log('nft', nfts);
@@ -246,7 +248,7 @@ describe("jackpot", function () {
       for (let i = 0; i < num; i++) {
         await token.mint(otherAccount[i].address, pack_price[0]);
         await token.connect(otherAccount[i]).approve(marketplace.target, pack_price[0]);
-        await marketplace.connect(otherAccount[i]).purchasePack(0, 1, referralAccount.address);
+        await marketplace.connect(otherAccount[i]).purchasePack(0, 1, referralAccount.address, [Math.floor(Math.random() * 1000000)]);
       }
       expect(Number(await token.balanceOf(referralAccount.address))).to.equal((pack_price[0] * num)/10);
       expect(Number(await token.balanceOf(jackpot.target))).to.equal((pack_price[0] * num)/10*8);
@@ -257,7 +259,7 @@ describe("jackpot", function () {
       await token.connect(otherAccount[num+1]).approve(marketplace.target, pack_price[0]);
       await token.mint(otherAccount[num+1].address, pack_price[0]);
       await token.approve(marketplace.target, pack_price[0]);
-      await marketplace.connect(otherAccount[num+1]).purchasePack(0, 1, ZeroAddress);
+      await marketplace.connect(otherAccount[num+1]).purchasePack(0, 1, ZeroAddress, [Math.floor(Math.random() * 1000000)]);
       // console.log('jackpot', await token.balanceOf(ZeroAddress));
       expect(Number(await token.balanceOf(owner.address))).to.equal(ownerCurBalance + pack_price[0]/10);
     });
@@ -292,7 +294,7 @@ describe("jackpot", function () {
         total_pay = pack_price[0]*randomAct[idx];
         await token.mint(otherAccount[player].address, total_pay);
         await token.connect(otherAccount[player]).approve(marketplace.target, total_pay);
-        await marketplace.connect(otherAccount[player]).purchasePack(0, randomAct[idx], referralAccount.address);
+        await marketplace.connect(otherAccount[player]).purchasePack(0, randomAct[idx], referralAccount.address, [Math.floor(Math.random() * 1000000)]);
         cardNum[player] += randomAct[idx];
         totalNums += randomAct[idx];
         for (let i = 0; i < otherAccount.length; i++) {
