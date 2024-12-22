@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Jackpot
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
+This repository includes jackpot and revenue-sharing contracts. It also includes the Flexible Hierarchical Drawing Pools to provide a fair card-drawing mechanism. The contract allows for the customization of Hierarchical Drawing Pools so that game developers can freely customize pool probabilities at each level according to their game design at launch, updates, and new releases while maintaining constant and fair pull rates. 
 
-## Available Scripts
+The revenue-sharing mechanism is divided into three parts:
+- Jackpot (80%): Players can claim all the prizes in the jackpot once they collect all the specified cards.
+- Referral (10%): If a referral link is used, this portion of the revenue will be transferred to the referral address immediately after each transaction.
+- FOMO3D (10%): This portion of the revenue will be evenly distributed based on the number of cards each address has purchased.
 
-In the project directory, you can run:
+The following document contains the setup instructions for our smart contracts, which has several roles to setup. Follow the steps below to set up each contract:
+## Contracts Structure
+![Alt text](./Jackpot.png?raw=true "Contract Structure")
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Setup Steps
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Register Contract
+- Grants the corresponding roles to the respective contracts. 
+    ![image](https://hackmd.io/_uploads/rJefx9sM0.png)
+### Marketplace Contract
+- setPack
+### Hierarchical Prize Pool Contract
+1. setTokenPool 
+2. setTokenMax 
+3. setUnitPool 
+4. setDrawingPool  
 
-### `npm test`
+## Deployed Contracts:
+### Boba Sepolia:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+| Contract Name | Purpose                                                                                                                     |
+|:------------- |:--------------------------------------------------------------------------------------------------------------------------- |
+| PaymentToken  | ERC-20 contract for use as our test token, "SA".                                                                            |
+| PrizeNFT      | ERC-1155 contract for minting NFTs.                                                                                         |
+| MarketPlace   | Allows users to buy cards. Automatically distributes the revenue from card purchases to other contracts & referrer wallets. |
+| FOMO3D        | Calculates and stores the earnings from early-buyer profit-sharing.                                                         |
+| Jackpot       | Manages the jackpot value, allowing a user to claim all by burning the required cards.                                      |
+| Referral      | Calculates and stores referral information.                                                                                 |
+| VRFManager    | Fullfills the random seed.                                                        |
+| Draw          | Requests a random number from the VRFManager and mints the corresponding NFT(s) to buyer.                                   |
+| Register      | Manage all the contracts.                                                                                                   |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
