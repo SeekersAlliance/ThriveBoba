@@ -22,12 +22,6 @@ module.exports = {
       url: `https://ethereum-sepolia-rpc.publicnode.com`,
       accounts: [PRIVATE_KEY],
     },
-    scroll_test: {
-      url: `https://scroll-sepolia-rpc.publicnode.com`,
-      accounts: [PRIVATE_KEY],
-      gas: "auto", 
-      gasPrice: "auto", 
-    },
     boba_test: {
       url: `https://sepolia.boba.network`,
       accounts: [PRIVATE_KEY],
