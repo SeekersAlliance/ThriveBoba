@@ -31,17 +31,17 @@ The following document contains the setup instructions for our smart contracts, 
 ### Boba Sepolia:
 
 
-| Contract Name | Purpose                                                                                                                     |
-|:------------- |:--------------------------------------------------------------------------------------------------------------------------- |
-| PaymentToken  | ERC-20 contract for use as our test token, "SA".                                                                            |
-| PrizeNFT      | ERC-1155 contract for minting NFTs.                                                                                         |
-| MarketPlace   | Allows users to buy cards. Automatically distributes the revenue from card purchases to other contracts & referrer wallets. |
-| FOMO3D        | Calculates and stores the earnings from early-buyer profit-sharing.                                                         |
-| Jackpot       | Manages the jackpot value, allowing a user to claim all by burning the required cards.                                      |
-| Referral      | Calculates and stores referral information.                                                                                 |
-| VRFManager    | Fullfills the random seed.                                                        |
-| Draw          | Requests a random number from the VRFManager and mints the corresponding NFT(s) to buyer.                                   |
-| Register      | Manage all the contracts.                                                                                                   |
+| Contract Name | Address    | Purpose                                                                                                                     |
+|:------------- | --- |:--------------------------------------------------------------------------------------------------------------------------- |
+| PaymentToken  | [0xC4734D1D2c7CD7F8241A1a83816E27e2Dc6Fd1af](https://testnet.bobascan.com/address/0xC4734D1D2c7CD7F8241A1a83816E27e2Dc6Fd1af)    | ERC-20 contract for use as our test token, "SA".                                                                            |
+| PrizeNFT      |   [0x46d657Ba75C5A1fd60b9E4dee64318Ff69e670fe](https://testnet.bobascan.com/address/0x46d657Ba75C5A1fd60b9E4dee64318Ff69e670fe)  | ERC-1155 contract for minting NFTs.                                                                                         |
+| MarketPlace   |   [0xCa24de3a05FDDBCA9F39dd02937cA86cD815A1f6](https://testnet.bobascan.com/address/0xCa24de3a05FDDBCA9F39dd02937cA86cD815A1f6)   | Allows users to buy cards. Automatically distributes the revenue from card purchases to other contracts & referrer wallets. |
+| FOMO3D        |  [0xf0C8283157f9C6C59D34083D52955783a3F0414A](https://testnet.bobascan.com/address/0xf0C8283157f9C6C59D34083D52955783a3F0414A)   | Calculates and stores the earnings from early-buyer profit-sharing.                                                         |
+| Jackpot       |   [0x22b605fC43AC6cAf517D02fA06AcF1a49ba860Ed](https://testnet.bobascan.com/address/0x22b605fC43AC6cAf517D02fA06AcF1a49ba860Ed)  | Manages the jackpot value, allowing a user to claim all by burning the required cards.                                      |
+| Referral      |  [0xDd866d81B0E56DBa8a5eAdC9A3787f411F3e3E3C](https://testnet.bobascan.com/address/0xDd866d81B0E56DBa8a5eAdC9A3787f411F3e3E3C)   | Calculates and stores referral information.                                                                                 |
+| VRFManager    | [0xD4F87E159060000cd3111AA6b58f61720Cd43AE3](https://testnet.bobascan.com/address/0xD4F87E159060000cd3111AA6b58f61720Cd43AE3)    | Fullfills the random seed.                                                                                                  |
+| Draw          |  [0x354256aF8b725662E4411EBE178c47d1f97a509B](https://testnet.bobascan.com/address/0x354256aF8b725662E4411EBE178c47d1f97a509B)   | Requests a random number from the VRFManager and mints the corresponding NFT(s) to buyer.                                   |
+| Register      | [0x1b73Ae17FD3ccFd91aE61ac3bB0CF314054B1eb4](https://testnet.bobascan.com/address/0x1b73Ae17FD3ccFd91aE61ac3bB0CF314054B1eb4)    | Manage all the contracts.                                                                                                   |
 
 
 
