@@ -70,7 +70,7 @@ export const Header: FC = () => {
 	}, []);
 
 	useEffect(() => {
-		appState.referralLink = `${domain}${getBaseUrl()}/referred/${address}`;
+		appState.referralLink = `${domain}${getBaseUrl()}/#/referred/${address}`;
 		setConnected(!!address);
 	}, [address]);
 

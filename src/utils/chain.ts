@@ -125,7 +125,8 @@ export const purchasePack = async (pack: number, card: number) => {
 				.approve(SmartContract.Marketplace, allowanceRequire)
 				.send({ from: address });
 		}
-		console.log('account', address, pack, card, referredAddress || '0x0000000000000000000000000000000000000000');	
+		console.log('account', address, pack, card, referredAddress || '0x0000000000000000000000000000000000000000');
+		console.log('referral', referredAddress);
 		const result = await marketplaceContract.methods
 			.purchasePack(
 				pack,
