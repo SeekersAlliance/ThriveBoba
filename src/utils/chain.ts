@@ -11,6 +11,40 @@ import abiNFT from './abiNFT.json';
 import abiReferral from './abiReferral.json';
 import abiToken from './abiToken.json';
 import { appState } from './state/index.ts';
+import { CHAIN_NAMESPACES, IAdapter, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
+// import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+// import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+
+const clientId = "BLV4o4HpKGVzv7KH4Fit0pG8t-O1Y0IisQMaDvTpWyTe0DjwA__CM601XCZy_5SHxKmBLWiQH_WVITxgLlVFpSE"; // get from https://dashboard.web3auth.io
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+	chainId: "0x70d2",
+	rpcTarget: "https://sepolia.boba.network", // Boba Network 主網的 RPC URL
+	displayName: "Boba Network Sepolia",
+	blockExplorerUrl: "https://testnet.bobascan.com",
+	ticker: "ETH", // Boba Network 上是與 ETH 相容的代幣
+	tickerName: "Ether"
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  privateKeyProvider,
+}
+export const web3auth = new Web3Auth(web3AuthOptions);
+
+// export const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+// adapters.forEach((adapter: IAdapter<unknown>) => {
+//   web3auth.configureAdapter(adapter);
+// });
+
 
 export const BobaSepoliaChainTarge = {
 	chainId: '0x70d2',

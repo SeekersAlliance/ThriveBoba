@@ -8,6 +8,7 @@ import {
 	getAccount,
 	getJackpotTotalValue,
 	handleAccountChanged,
+	web3auth,
 } from '../../utils/chain.ts';
 import { formatAddress, getBaseUrl } from '../../utils/helper.ts';
 import { appState } from '../../utils/state/index.ts';
@@ -53,13 +54,26 @@ export const Header: FC = () => {
 	useEffect(() => {
 		const getInitialData = async () => {
 			try {
-				await getAccount();
+				// await getAccount();
 				await getJackpotTotalValue();
 			}
 			catch (err) {
 				console.error(err);
 			}
 		}
+		const initWeb3Auth = async () => {
+      try {
+        await web3auth.initModal();
+        // setProvider(web3auth.provider);
+
+        if (web3auth.connected) {
+          // setLoggedIn(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+		initWeb3Auth();
 		getInitialData();
 		window.ethereum?.on('accountsChanged', (accounts: string[]) => {
 			handleAccountChanged(accounts);
@@ -73,6 +87,16 @@ export const Header: FC = () => {
 		appState.referralLink = `${domain}${getBaseUrl()}/#/referred/${address}`;
 		setConnected(!!address);
 	}, [address]);
+
+	const testlogin = async () => {
+    const web3authProvider = await web3auth.connect();
+    // setProvider(web3authProvider);
+		console.log('web3authProvider', web3authProvider);
+    if (web3auth.connected) {
+      // setLoggedIn(true);
+			console.log('web3auth.connected', web3auth.connected);
+    }
+  };
 
 	return (
 		<Container>
@@ -104,7 +128,8 @@ export const Header: FC = () => {
 						$focus={focus}
 						onMouseDown={() => setFocus(true)}
 						onMouseUp={() => setFocus(false)}
-						onClick={connectWallet}
+						// onClick={connectWallet}
+						onClick={testlogin}
 					>
 						Connect Wallet
 					</ConnectWallet>

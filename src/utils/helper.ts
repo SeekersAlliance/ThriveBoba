@@ -1,5 +1,5 @@
 export const getBaseUrl = () =>
-	0 ? '' : '/jackpot-boba';
+	1 ? '' : '/jackpot-boba';
 
 export const formatAddress = (address: string, numbOfChar = 4) => {
 	if (!address) {
