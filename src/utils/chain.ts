@@ -15,7 +15,7 @@ import { CHAIN_NAMESPACES, IAdapter, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 
-// import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { getInjectedAdapters } from "@web3auth/default-evm-adapter";
 // import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 
 const clientId = "BLV4o4HpKGVzv7KH4Fit0pG8t-O1Y0IisQMaDvTpWyTe0DjwA__CM601XCZy_5SHxKmBLWiQH_WVITxgLlVFpSE"; // get from https://dashboard.web3auth.io
@@ -42,6 +42,13 @@ const web3AuthOptions: Web3AuthOptions = {
 export const web3auth = new Web3Auth(web3AuthOptions);
 
 try {
+	const adapters = await getInjectedAdapters({ options: web3AuthOptions });
+	adapters.forEach((adapter: IAdapter<unknown>) => {
+		web3auth.configureAdapter(adapter);
+		console.log('adapter', adapter);
+	});
+	console.log('adapters', adapters);
+
 	await web3auth.initModal();
 	// setProvider(web3auth.provider);
 
@@ -81,10 +88,6 @@ export const connectWeb3Auth = async () => {
 		console.error(error);
 	}
 }
-// export const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-// adapters.forEach((adapter: IAdapter<unknown>) => {
-//   web3auth.configureAdapter(adapter);
-// });
 
 
 export const BobaSepoliaChainTarge = {
