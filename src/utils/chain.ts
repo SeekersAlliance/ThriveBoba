@@ -14,6 +14,7 @@ import { appState } from './state/index.ts';
 import { CHAIN_NAMESPACES, IAdapter, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
+
 // import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 // import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 
@@ -40,6 +41,46 @@ const web3AuthOptions: Web3AuthOptions = {
 }
 export const web3auth = new Web3Auth(web3AuthOptions);
 
+try {
+	await web3auth.initModal();
+	// setProvider(web3auth.provider);
+
+	if (web3auth.connected) {
+		await web3auth.logout();
+		console.log('web3auth.connected', web3auth.connected);
+		
+		
+	}
+} catch (error) {
+	console.error(error);
+}
+
+export const connectWeb3Auth = async () => {
+	try{
+		const web3authProvider = await web3auth.connect();
+		// setProvider(web3authProvider);
+		console.log('web3authProvider', web3authProvider);
+		if (web3auth.connected) {
+			// setLoggedIn(true);
+			const user = await web3auth.getUserInfo();
+		console.log('User Info:', user);
+		const web3 = new Web3(web3auth.provider);
+		const accounts = await web3.eth.getAccounts();
+		console.log('Account:', accounts[0]);
+		appState.address = accounts[0];
+		appState.walletType = 'web3auth';
+
+		const balance = web3.utils.fromWei(
+				await web3.eth.getBalance(accounts[0]), // Balance is in wei
+				"ether"
+			);
+	
+		console.log('balance', balance);
+		}
+	} catch (error) {
+		console.error(error);
+	}
+}
 // export const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 // adapters.forEach((adapter: IAdapter<unknown>) => {
 //   web3auth.configureAdapter(adapter);
@@ -79,6 +120,8 @@ export const connectWallet = async () => {
 
 		if (accounts.length > 0) {
 			appState.address = accounts[0];
+			// wallet type is injected
+			appState.walletType = 'injected';
 		}
 
 		await ensureNetworkTarget();
@@ -115,7 +158,8 @@ export enum SmartContract {
 	Fomo = '0xf0C8283157f9C6C59D34083D52955783a3F0414A',
 }
 
-export const web3 = new Web3(window.ethereum);
+// export const web3 = new Web3(window.ethereum);
+export const web3 = new Web3(web3auth.provider);
 // web3.eth.setProvider(BobaSepoliaChainTarge.rpcUrls[0]);
 
 
@@ -135,9 +179,14 @@ const fomoContract = loadContract(abiFomo, SmartContract.Fomo);
 const drawContract = loadContract(abiDraw, SmartContract.Draw);
 
 export const faucetToken = async (address: string, amount: number) => {
-	await tokenContract.methods.mint(address, amount * 10 ** 6).send({
-		from: address,
-	});
+	try{
+		await tokenContract.methods.mint(address, amount * 10 ** 6).send({
+			from: address,
+		});
+	} catch (error) {
+		console.error(error);
+		window.alert(error.message)
+	}
 };
 
 export const purchasePack = async (pack: number, card: number) => {
@@ -196,6 +245,7 @@ export const purchasePack = async (pack: number, card: number) => {
 		return result;
 	} catch (error) {
 		console.log(error);
+		window.alert(error.message)
 	}
 };
 
@@ -367,9 +417,10 @@ export const getJackpotTotalValue = async () => {
 
 export const claimJackpot = async () => {
 	const { address } = snapshot(appState);
-	const isApprovedAll = await nftContract.methods
-		.isApprovedForAll(address, SmartContract.Jackpot)
-		.call();
+	try{
+		const isApprovedAll = await nftContract.methods
+			.isApprovedForAll(address, SmartContract.Jackpot)
+			.call();
 	if (!isApprovedAll) {
 		await nftContract.methods
 			.setApprovalForAll(SmartContract.Jackpot, true)
@@ -387,6 +438,10 @@ export const claimJackpot = async () => {
 	appState.jackpotTxId = result.transactionHash;
 	appState.jackpotClaimed = jackpotClaimed;
 	getJackpotTotalValue();
+	} catch (error) {
+		console.error(error);
+		window.alert(error.message)
+	}
 };
 
 export const getTotalReferral = async () => {
@@ -454,13 +509,17 @@ export const getPredict = async (address: string, numberOfCards: number) => {
 export const claimProfit = async () => {
 	const { address } = snapshot(appState);
 	console.log('get claimed', fomoContract);
-
-	const result = await fomoContract.methods.claim().send({
-		from: address,
-	});
+	try{
+		const result = await fomoContract.methods.claim().send({
+			from: address,
+		});
 
 	if (result) {
 		getProfitShareInfo();
+	}
+	} catch (error) {
+		console.error(error);
+		window.alert(error.message)
 	}
 };
 

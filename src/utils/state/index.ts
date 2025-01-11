@@ -2,6 +2,7 @@ import { proxy } from 'valtio';
 import type { EventLog } from 'web3';
 
 interface AppState {
+	walletType: string;
 	address: string;
 	requestId: string;
 	cardResult: number[];
@@ -28,6 +29,7 @@ interface AppState {
 }
 
 export const appState = proxy<AppState>({
+	walletType: '',
 	address: '',
 	requestId: '',
 	cardResult: [],

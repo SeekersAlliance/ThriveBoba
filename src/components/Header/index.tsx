@@ -8,12 +8,13 @@ import {
 	getAccount,
 	getJackpotTotalValue,
 	handleAccountChanged,
-	web3auth,
+	connectWeb3Auth,
 } from '../../utils/chain.ts';
 import { formatAddress, getBaseUrl } from '../../utils/helper.ts';
 import { appState } from '../../utils/state/index.ts';
 import { useSnapshot } from 'valtio';
 import React from 'react';
+
 
 declare global {
 	interface Window {
@@ -61,19 +62,19 @@ export const Header: FC = () => {
 				console.error(err);
 			}
 		}
-		const initWeb3Auth = async () => {
-      try {
-        await web3auth.initModal();
-        // setProvider(web3auth.provider);
+		// const initWeb3Auth = async () => {
+    //   try {
+    //     await web3auth.initModal();
+    //     // setProvider(web3auth.provider);
 
-        if (web3auth.connected) {
-          // setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-		initWeb3Auth();
+    //     if (web3auth.connected) {
+    //       // setLoggedIn(true);
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
+		// initWeb3Auth();
 		getInitialData();
 		window.ethereum?.on('accountsChanged', (accounts: string[]) => {
 			handleAccountChanged(accounts);
@@ -88,15 +89,19 @@ export const Header: FC = () => {
 		setConnected(!!address);
 	}, [address]);
 
-	const testlogin = async () => {
-    const web3authProvider = await web3auth.connect();
-    // setProvider(web3authProvider);
-		console.log('web3authProvider', web3authProvider);
-    if (web3auth.connected) {
-      // setLoggedIn(true);
-			console.log('web3auth.connected', web3auth.connected);
-    }
-  };
+	// const testlogin = async () => {
+	// 	try{
+	// 		const web3authProvider = await web3auth.connect();
+	// 		// setProvider(web3authProvider);
+	// 		console.log('web3authProvider', web3authProvider);
+	// 		if (web3auth.connected) {
+	// 			// setLoggedIn(true);
+	// 			console.log('web3auth.connected', web3auth.connected);
+	// 		}
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
+  // };
 
 	return (
 		<Container>
@@ -129,7 +134,7 @@ export const Header: FC = () => {
 						onMouseDown={() => setFocus(true)}
 						onMouseUp={() => setFocus(false)}
 						// onClick={connectWallet}
-						onClick={testlogin}
+						onClick={connectWeb3Auth}
 					>
 						Connect Wallet
 					</ConnectWallet>
