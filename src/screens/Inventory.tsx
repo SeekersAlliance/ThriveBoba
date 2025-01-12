@@ -9,9 +9,11 @@ import { claimJackpot, fetchNftIdList } from '../utils/chain.ts';
 import { getBaseUrl } from '../utils/helper.ts';
 import { appState } from '../utils/state/index.ts';
 import { useSnapshot } from 'valtio';
+import Loading from '../components/Loading/index.tsx';
 
 export const InventoryScreen: FC = () => {
 	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState(false);
 	const { address, jackpot, jackpotTxId, jackpotClaimed, collectedNft } =
 		useSnapshot(appState);
 	const [collectedIds, setCollectedIds] = useState<number[]>(
@@ -41,6 +43,7 @@ export const InventoryScreen: FC = () => {
 
 	return (
 		<Container>
+			{isLoading && <Loading />}
 			<Header />
 			<Title>INVENTORY</Title>
 			<Collection>
@@ -59,7 +62,11 @@ export const InventoryScreen: FC = () => {
 				<MainBtn
 					isLong={true}
 					disabled={!(collectedIds.length === 5 && jackpot > 0)}
-					onClick={claimJackpot}
+					onClick={async () => {
+						setIsLoading(prev => true)
+						await claimJackpot()
+						setIsLoading(prev => false)
+					}}
 				>
 					BURN CARDS TO CLAIM JACKPOT!
 				</MainBtn>

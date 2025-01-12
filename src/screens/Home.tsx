@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FaucetBtn from '../components/FaucetBtn/index.tsx';
 import Header from '../components/Header/index.tsx';
@@ -9,8 +9,10 @@ import { faucetToken, fetchPastEvents, purchasePack } from '../utils/chain.ts';
 import { formatAddress, getBaseUrl } from '../utils/helper.ts';
 import { appState } from '../utils/state/index.ts';
 import { useSnapshot } from 'valtio';
+import Loading  from '../components/Loading/index.tsx'
 
 export const HomeScreen: FC = () => {
+	const [isLoading, setIsLoading] = useState(false)
 	const navigate = useNavigate();
 	const { address, referredAddress, latestEvents } = useSnapshot(appState);
 
@@ -26,6 +28,7 @@ export const HomeScreen: FC = () => {
 	}, []);
 	return (
 		<Fragment>
+			{isLoading && <Loading />}
 			<Container>
 				<Header />
 				<MarqueeContainer>
@@ -62,7 +65,11 @@ export const HomeScreen: FC = () => {
 						>
 							Boba Network Bridge
 						</FaucetBtn>
-						<FaucetBtn onClick={() => faucetToken(address, 1000)}>
+						<FaucetBtn onClick={ async () => {
+							setIsLoading(prev => true)
+							await faucetToken(address, 1000)
+							setIsLoading(prev => false)
+						}}>
 							Get 1000 TestUSD
 						</FaucetBtn>
 					</BtnGroup>
@@ -74,7 +81,9 @@ export const HomeScreen: FC = () => {
 							<MainBtn
 								tag="10 TestUSD"
 								onClick={async () => {
+									setIsLoading(prev => true)
 									const result = await purchasePack(0, 1);
+									setIsLoading(prev => false)
 									result && navigate('/result/single');
 								}}
 							>
@@ -83,7 +92,9 @@ export const HomeScreen: FC = () => {
 							<MainBtn
 								tag="100 TestUSD"
 								onClick={async () => {
+									setIsLoading(prev => true)
 									const result = await purchasePack(1, 1);
+									setIsLoading(prev => false)
 									result && navigate('/result/pack');
 								}}
 							>

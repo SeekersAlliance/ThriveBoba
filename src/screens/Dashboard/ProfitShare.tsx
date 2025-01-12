@@ -10,6 +10,7 @@ import { claimProfit, getPredict, getProfitShareInfo } from '../../utils/chain.t
 import { getBaseUrl } from '../../utils/helper.ts';
 import { appState } from '../../utils/state/index.ts';
 import { useSnapshot } from 'valtio';
+import Loading from '../../components/Loading/index.tsx';
 
 interface Props {
 	active?: boolean;
@@ -17,6 +18,7 @@ interface Props {
 
 export const ProfitShare: FC<Props> = ({ active = false }) => {
 	const { address, profit } = useSnapshot(appState);
+	const [isLoading, setIsLoading] = useState(false);
 	const naviagte = useNavigate();
 	const [cardAmount, setCardAmount] = useState(1);
 	const [predictedProfit, setPredictedProfit] = useState(
@@ -40,6 +42,7 @@ export const ProfitShare: FC<Props> = ({ active = false }) => {
 
 	return (
 		<Container $active={active}>
+			{isLoading && <Loading />}
 			<Upper>
 				<UpperLeft>
 					<MetricBox
@@ -54,7 +57,11 @@ export const ProfitShare: FC<Props> = ({ active = false }) => {
 					</Claim>
 					<MainBtn
 						disabled={profit.unclaim < 0.01}
-						onClick={claimProfit}
+						onClick={async () => {
+							setIsLoading(prev => true)
+							await claimProfit()
+							setIsLoading(prev => false)
+						}}
 					>{`CLAIM $${profit.unclaim.toFixed(2)}!`}</MainBtn>
 				</UpperLeft>
 				<UpperRight>
