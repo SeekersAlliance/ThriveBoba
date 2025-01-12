@@ -24,7 +24,6 @@ export const HomeScreen: FC = () => {
 			fetchPastEvents();
 		}
 	}, []);
-
 	return (
 		<Fragment>
 			<Container>

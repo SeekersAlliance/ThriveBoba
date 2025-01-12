@@ -34,6 +34,15 @@ export const routerBrowser = createBrowserRouter(
 			element: <ResultScreen />,
 		},
 		{
+			path: '/referred/:referredAddress',
+			loader: async ({ params }) => {
+				const { referredAddress } = params;
+				appState.referredAddress = referredAddress;
+				console.log(referredAddress, '<<< I change the referred address');
+				return redirect('/');
+			},
+		},	
+		{
 			path: '/',
 			element: <HomeScreen />,
 		},
@@ -43,19 +52,19 @@ export const routerBrowser = createBrowserRouter(
 	},
 );
 
-const routerHash = createHashRouter([
-    {
-        path: '/referred/:referredAddress',
-        loader: async ({ params }) => {
-            const { referredAddress } = params;
-            appState.referredAddress = referredAddress;
-            console.log('referredAddress', referredAddress);
-            const newUrl = window.location.href.split('#')[0];
-						console.log('newUrl', newUrl);
-            window.history.replaceState(null, '', newUrl); 
-        },
-    },
-]);
+// const routerHash = createHashRouter([
+//     {
+//         path: '/referred/:referredAddress',
+//         loader: async ({ params }) => {
+//             const { referredAddress } = params;
+//             appState.referredAddress = referredAddress;
+//             console.log('referredAddress', referredAddress);
+//             const newUrl = window.location.href.split('#')[0];
+// 						console.log('newUrl', newUrl);
+//             window.history.replaceState(null, '', newUrl); 
+//         },
+//     },
+// ]);
 
 export const App: FC = () => {
 	useEffect(() => {
@@ -66,8 +75,8 @@ export const App: FC = () => {
 
 		};
 	}, []);
-	const router = window.location.hash ? routerHash : routerBrowser;
-	return <RouterProvider router={router} />;
+	console.log(appState.referredAddress, '<<< referred address log in app');
+	return <RouterProvider router={routerBrowser} />;
   // return (
   //   <Wrapper>
   //   <Title>

@@ -63,26 +63,30 @@ try {
 }
 
 export const connectWeb3Auth = async () => {
+	const { address, referredAddress } = snapshot(appState);
 	try{
+		console.log(referredAddress, '<<< referred address log in connect web3 auth');
 		const web3authProvider = await web3auth.connect();
 		// setProvider(web3authProvider);
-		console.log('web3authProvider', web3authProvider);
+		// console.log('web3authProvider', web3authProvider);
 		if (web3auth.connected) {
-			// setLoggedIn(true);
-			const user = await web3auth.getUserInfo();
-		console.log('User Info:', user);
-		const web3 = new Web3(web3auth.provider);
-		const accounts = await web3.eth.getAccounts();
-		console.log('Account:', accounts[0]);
-		appState.address = accounts[0];
-		appState.walletType = 'web3auth';
+			// 	// setLoggedIn(true);
+			// 	const user = await web3auth.getUserInfo();
+			// console.log('User Info:', user);
+			const web3 = new Web3(web3auth.provider);
+			const accounts = await web3.eth.getAccounts();
+			console.log('Account:', accounts[0]);
+			appState.address = accounts[0];
+			appState.walletType = 'web3auth';
+			appState.referredAddress = referredAddress;
+			// console.log(appState.referredAddress, '<<< referred address log in connect web3 auth');
 
-		const balance = web3.utils.fromWei(
-				await web3.eth.getBalance(accounts[0]), // Balance is in wei
-				"ether"
-			);
-	
-		console.log('balance', balance);
+			const balance = web3.utils.fromWei(
+					await web3.eth.getBalance(accounts[0]), // Balance is in wei
+					"ether"
+				);
+		
+			console.log('balance', balance);
 		}
 	} catch (error) {
 		console.error(error);
