@@ -1,5 +1,6 @@
 import React from 'react';
 import './my.css';
+import { getBaseUrl } from '../../utils/helper.ts';
 
 const Loading = () => {
 	return (
@@ -13,7 +14,7 @@ const Loading = () => {
           autoPlay
           muted
         >
-          <source src="./img/loading.webm" type="video/webm" />
+          <source src={`${getBaseUrl()}/img/loading.webm`} type="video/webm" />
         </video>
       </div>
     </div>

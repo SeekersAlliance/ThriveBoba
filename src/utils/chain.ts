@@ -18,7 +18,7 @@ import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { getInjectedAdapters } from "@web3auth/default-evm-adapter";
 // import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 
-const clientId = "BLV4o4HpKGVzv7KH4Fit0pG8t-O1Y0IisQMaDvTpWyTe0DjwA__CM601XCZy_5SHxKmBLWiQH_WVITxgLlVFpSE"; // get from https://dashboard.web3auth.io
+const clientId = "BCvCWmVmU8OrDe4kFVlAbrCzl5K8lvZDDaPgy0cMQ6JuPUUP699n4cfwQdhMAXEvx-3xdQGbA7jWkbEiCZUeEJM"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -36,7 +36,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
 }
 export const web3auth = new Web3Auth(web3AuthOptions);
